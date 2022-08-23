@@ -53,7 +53,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       }, 8000);
       
     }catch(error){
-      return res.status(401).send('An error ocurred, please verify image format and image links do not redirect');
+      return res.status(422).send('An error ocurred, please verify image format and image links do not redirect');
     }
   } );
   
