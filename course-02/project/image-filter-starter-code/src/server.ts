@@ -30,6 +30,32 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   /**************************************************************************** */
 
   //! END @TODO1
+
+  app.get( "/filteredimage", async ( req, res ) => {
+
+    // smample image url: https://media.istockphoto.com/photos/mountain-landscape-picture-id517188688
+
+    const image_url: string = req.query.image_url;
+
+    // validating that image url is provided
+    if(!image_url){
+      return res.status(401).send('image url is required');
+    }
+   
+    try{
+      // calling filterImageFromURL(image_url) to filter the image
+      const filteredpath: string = await filterImageFromURL(image_url);
+      res.status(200).sendFile(filteredpath);
+
+      // deleting the link after 8 seconds if not the browser won't show the image
+      setTimeout(() => {
+        deleteLocalFiles([filteredpath]);
+      }, 8000);
+      
+    }catch(error){
+      return res.status(401).send('An error ocurred, please verify image format and image links do not redirect');
+    }
+  } );
   
   // Root Endpoint
   // Displays a simple message to the user
